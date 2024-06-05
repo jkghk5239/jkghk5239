@@ -1,0 +1,28 @@
+1 public class PageBean {
+2 private int curPage; //当前页
+3 private int pageCount; //总页数
+4 private int rowsCount; //总行数
+5 private int pageSize=10; //每页多少行
+6
+7
+8
+9publicPageBean(int rows){
+10
+11 this.setRowsCount(rows);
+12 if(this.rowsCount % this.pageSize == 0){
+13 this.pageCount=this.rowsCount / this.pageSize;
+14 }
+15 else if(rows<this.pageSize){
+16 this.pageCount=1;
+17 }
+18 else{
+19 this.pageCount=this.rowsCount / this.pageSize +1;
+20 }
+21 }
+22
+23
+24 publicintgetCurPage {
+25 return curPage;
+26 }
+27publicvoidsetCurPage(int curPage) {
+28 this.curPage = curPage;
