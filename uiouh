@@ -1,0 +1,16 @@
+package com.yelang.project.extend.earthquake.mapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.yelang.project.extend.earthquake.domain.GeographicNameVo;
+public interface GeographicNameMapper extends BaseMapper<GeographicName>{
+	
+static final String FIND_LIST_BY_EARTHID = "<script>"
++"select t.pk_id,t.name,t.pinyin,t.classz,t.bz,t.slx,st_x(t.geom) lon,st_y(t.geom) lat, "
++" st_distance(t.geom :: geography, t1.geom :: geography) dist from biz_geographic_name t,biz_ceic_earthquake t1 "
++ " where t1.pk_id= #{eqId} and st_dwithin(t.geom :: geography,t1.geom :: geography,100000 )  order by dist "
++ "</script>";
+	@Select(FIND_LIST_BY_EARTHID)
+	List<GeographicNameVo> findListByEarthId(@Param("eqId") Long eqId);
+}
