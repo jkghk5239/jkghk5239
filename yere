@@ -1,0 +1,28 @@
+# 3、colname函数
+import xlrd
+import string
+# 自定义函数，将列索引转换为Excel列名
+def colname(colx, names=string.ascii_uppercase):
+    """Convert a 0-based column number to an Excel-style column name."""
+    if colx < 0:
+        raise ValueError("Column number must be non-negative")
+    if colx < 26:
+        return names[colx]
+    else:
+        div, mod = divmod(colx, 26)
+        return colname(div - 1, names) + names[mod]
+if __name__ == '__main__':
+    # 打开Excel文件，可根据自身文件的实际路径做调整，如我的路径为：E:\360Downloads\test.xls
+    workbook = xlrd.open_workbook(r'E:\360Downloads\test.xls')
+    # sheet = workbook.sheet_by_index(0)  # 假设使用第一个工作表
+    sheet = workbook.sheet_by_name('test1')  # 也可以按名称指定要操作的工作表，注意，只需要指定工作表名，而不是带后缀的文件名
+    # 假设我们要获取第3列的列名(注意：列索引从0开始)
+    colx = 2
+    # 使用自定义函数获取列名
+    col_name = colname(colx)
+    # 打印结果
+    print(f"The name of column {colx + 1} (Excel column number) is: {col_name}")
+    # 另外，你也可以获取该列中特定行的值作为示例
+    rowx = 1  # 假设我们获取第一行的值
+    cell_value = sheet.cell_value(rowx, colx)
+    print(f"The value in cell ({col_name}{rowx + 1}) is: {cell_value}")
